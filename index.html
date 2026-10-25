@@ -1,0 +1,310 @@
+<!DOCTYPE html><html lang="hi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#58cc02">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ank-Maths"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>/* catch the browser's install offer early (it can fire before the app script runs) */
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();window.__bip=e;dispatchEvent(new Event('bipready'))});</script>
+<title>Ank-Maths</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>:root{--bg:#fff;--card:#fff;--ink:#3c3c3c;--mute:#777;--line:#e5e5e5;--g:#58cc02;--gd:#58a700;--b:#1cb0f6;--bd:#1899d6;--o:#ff9600;--od:#cc7900;--r:#ff4b4b;--rd:#ea2b2b;--p:#ce82ff;--pd:#a568cc;--soft:#f7f7f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#131f24;--card:#1f2c33;--ink:#f1f7fb;--mute:#8aa0ab;--line:#37464f;--soft:#202f36}}
+:root[data-theme=dark]{--bg:#131f24;--card:#1f2c33;--ink:#f1f7fb;--mute:#8aa0ab;--line:#37464f;--soft:#202f36}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 'Noto Sans Devanagari',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+h1,h2,h3,.f{font-family:'Baloo 2','Noto Sans Devanagari',system-ui,sans-serif;margin:0}
+#app{max-width:560px;margin:0 auto;padding:0 16px 110px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:2px solid var(--line)}
+.top h1{font-size:20px;flex:1;color:var(--g);font-weight:800}
+.chip{font-weight:800;font-family:'Baloo 2';display:flex;gap:4px;align-items:center}
+.bar{height:16px;background:var(--line);border-radius:99px;overflow:hidden;flex:1}.bar i{display:block;height:100%;background:var(--g);border-radius:99px;transition:width .4s}
+.btn{display:block;width:100%;border:0;border-bottom:4px solid var(--gd);background:var(--g);color:#fff;font:800 16px 'Baloo 2';padding:12px 18px;border-radius:16px;cursor:pointer;letter-spacing:.3px}
+.btn:active{transform:translateY(3px);border-bottom-width:1px}.btn.b{background:var(--b);border-color:var(--bd)}.btn.w{background:var(--card);color:var(--b);border:2px solid var(--line);border-bottom-width:4px}
+.btn.s{width:auto;display:inline-block;padding:6px 14px;font-size:14px}
+.btn:disabled{background:var(--line);border-color:var(--line);color:var(--mute);cursor:not-allowed}
+.hero{background:var(--g);color:#fff;border-radius:20px;padding:16px 18px;margin:16px 0 8px;border-bottom:4px solid var(--gd)}
+.hero h2{font-size:22px}.hero p{margin:2px 0 0;opacity:.95;font-size:14px}
+.path{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 0}
+.node{width:84px;height:76px;border-radius:50%;border:0;border-bottom:7px solid;font-size:32px;cursor:pointer;color:#fff;position:relative}
+.node:active{transform:translateY(5px);border-bottom-width:2px}
+.node.done{background:var(--o);border-color:var(--od)}
+.lbl{text-align:center;font:700 15px 'Baloo 2','Noto Sans Devanagari';max-width:260px;line-height:1.3;margin-bottom:18px}
+.lbl small{display:block;color:var(--mute);font:400 12px 'Noto Sans Devanagari'}
+.ring{position:absolute;inset:-7px;border-radius:50%;pointer-events:none}
+.card{background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;padding:14px;margin:10px 0}
+.tabs{display:flex;gap:8px;margin:14px 0}.tabs button{flex:1;padding:8px 4px;border:2px solid var(--line);border-bottom-width:4px;background:var(--card);color:var(--mute);border-radius:12px;font:700 14px 'Baloo 2','Noto Sans Devanagari';cursor:pointer}
+.tabs button.on{border-color:var(--b);background:rgba(28,176,246,.12);color:var(--b)}
+.step{display:flex;gap:12px;align-items:flex-start;margin:0}.step+.step{margin-top:0}
+.dot{flex:none;width:30px;height:30px;border-radius:50%;background:var(--b);color:#fff;font:800 14px 'Baloo 2';display:grid;place-items:center}
+.rail{width:2px;height:14px;background:var(--line);margin:2px 0 2px 14px}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:12px;border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;margin:8px 0;cursor:pointer;background:var(--card);user-select:none}
+.chk .bx{flex:none;width:26px;height:26px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;color:#fff;font-weight:800}
+.chk.on{border-color:var(--g);background:rgba(88,204,2,.1)}.chk.on .bx{background:var(--g);border-color:var(--g)}
+.nav{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:2px solid var(--line);display:flex;justify-content:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));z-index:6}
+.nav div{display:flex;max-width:560px;width:100%;gap:4px}
+.nav button{flex:1;border:2px solid transparent;background:none;border-radius:12px;padding:4px 0;font:700 11px 'Baloo 2','Noto Sans Devanagari';color:var(--mute);cursor:pointer}
+.nav button span{display:block;font-size:22px}.nav .on{border-color:var(--b);background:rgba(28,176,246,.12);color:var(--b)}
+pre{white-space:pre-wrap;font:14px/1.7 'Noto Sans Devanagari';background:var(--soft);padding:12px;border-radius:12px;margin:8px 0;border:2px dashed var(--line)}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border:2px solid var(--line);border-bottom-width:4px;background:var(--card);color:var(--ink);border-radius:14px;font:inherit;cursor:pointer}
+.opt.ok{border-color:var(--g);background:rgba(88,204,2,.14)}.opt.no{border-color:var(--r);background:rgba(255,75,75,.12)}
+.fb{padding:12px 14px;border-radius:14px;margin:10px 0;font-weight:600}.fb.ok{background:rgba(88,204,2,.15);color:var(--gd)}.fb.no{background:rgba(255,75,75,.15);color:var(--rd)}
+.back{background:none;border:0;font:800 22px 'Baloo 2';color:var(--mute);cursor:pointer;padding:0 6px}
+.tag{display:inline-block;font:700 12px 'Baloo 2';padding:1px 10px;border-radius:99px;background:var(--b);color:#fff}
+.dec{border-left:6px solid var(--o);border-radius:6px 14px 14px 6px}
+button:focus-visible{outline:3px solid var(--b);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+input,textarea,select{width:100%;font:inherit;padding:10px;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);margin:4px 0 10px}
+label{font-weight:700;font-size:14px}.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:#333;color:#fff;padding:10px 16px;border-radius:12px;z-index:9;font-weight:700}
+.node:disabled{background:var(--line)!important;border-color:var(--mute)!important;cursor:not-allowed}.opt.sel{border-color:var(--b);background:rgba(28,176,246,.12)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row .btn{margin:0}.card table{border-collapse:collapse;width:100%;display:block;overflow-x:auto}.card td,.card th{border:1px solid var(--line);padding:6px 8px}.card img{max-width:100%;height:auto}
+</style></head><body><div id="app"></div>
+<script type="module">
+// ===== 1. CONFIG: paste your Firebase web-app config here (Project settings > Your apps) =====
+const CFG={apiKey:"AIzaSyBaYVdWP3Q9D1BuCfbVelgYeAgoF5Ofj8Q",authDomain:"ank-maths.firebaseapp.com",projectId:"ank-maths",appId:"1:898672404386:web:3544b9ca8cb120f38bb4fb"};
+const CFGAPP={xpLesson:20,xpPerCorrect:5,adminWhatsApp:'917545831820'}; // adminWhatsApp: देश कोड सहित, बिना + के, जैसे 919876543210
+import {initializeApp,deleteApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged,createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {initializeFirestore,persistentLocalCache,collection,doc,getDoc,getDocs,setDoc,addDoc,deleteDoc,query,where,orderBy,limit,serverTimestamp,writeBatch} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+if(CFG.apiKey.startsWith('YOUR_'))setTimeout(()=>alert('index.html में CFG (Firebase config) अभी भरा नहीं है'),500);
+const app=initializeApp(CFG),auth=getAuth(app),db=initializeFirestore(app,{localCache:persistentLocalCache()}); // cache = offline reading of loaded content
+
+// ===== 2. STATE & HELPERS =====
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),nl=s=>esc(s).replace(/\n/g,'<br>');
+const toast=m=>{const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.append(d);setTimeout(()=>d.remove(),2600)};
+const empty=m=>`<div class="card" style="text-align:center;color:var(--mute)">${m}</div>`;
+
+// Lessons/questions may contain simple HTML. It is cleaned first (scripts, iframes, on* handlers, javascript: links are removed).
+const HTMLTAG=/<\/?(p|div|span|b|i|u|em|strong|br|ul|ol|li|table|tr|td|th|thead|tbody|h[1-6]|img|a|sup|sub|hr|center|font|code|pre|blockquote)\b[^>]*>/i;
+function clean(h){const d=new DOMParser().parseFromString(h,'text/html');d.querySelectorAll('script,iframe,object,embed,link,meta,style,form,base').forEach(e=>e.remove());
+ d.body.querySelectorAll('*').forEach(e=>[...e.attributes].forEach(a=>{const n=a.name.toLowerCase(),x=a.value.trim().toLowerCase();if(n.startsWith('on')||((n=='href'||n=='src')&&/^(javascript|vbscript|data:text)/.test(x)))e.removeAttribute(a.name)}));return d.body.innerHTML}
+const rich=s=>HTMLTAG.test(s||'')?clean(s):nl(s);
+// Bulk import helpers: CSV (Excel "CSV UTF-8") or JSON
+function parseCSV(s){const r=[];let row=[],f='',q=false;for(let i=0;i<s.length;i++){const c=s[i];
+ if(q){if(c=='"'){if(s[i+1]=='"'){f+='"';i++}else q=false}else f+=c}else if(c=='"')q=true;else if(c==','){row.push(f);f=''}else if(c=='\n'){row.push(f);r.push(row);row=[];f=''}else if(c!='\r')f+=c}
+ row.push(f);r.push(row);return r.filter(x=>x.some(y=>y.trim()))}
+function parseIn(s){s=s.trim().replace(/^\uFEFF/,'');if(s[0]=='['||s[0]=='{'){const j=JSON.parse(s);return Array.isArray(j)?j:[j]}
+ const [h,...b]=parseCSV(s);return b.map(r=>Object.fromEntries(h.map((k,i)=>[k.trim(),(r[i]||'').trim()])))}
+const dl=(name,text,type)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click()};
+const checkQ=d=>{if(!['mcq','num','multi'].includes(d.type))return 'type: mcq / num / multi में से एक';
+ if(d.type=='num')return isNaN(parseFloat(d.answer))?'संख्यात्मक उत्तर चाहिए':'';
+ if(!/^[1-4](,[1-4])*$/.test(d.answer)||(d.type=='mcq'&&d.answer.length>1))return 'उत्तर 1-4 में दें (multi: 1,3)';return d.o1&&d.o2?'':'कम से कम 2 विकल्प चाहिए'};
+const SAMPLE={subjects:{title:'अंकगणित',emoji:'🧮',order:1,published:'true'},chapters:{subject:'अंकगणित',title:'जोड़',emoji:'➕',order:1,published:'true'},
+ lessons:{chapter:'जोड़',title:'जोड़ की विधि',intro:'<b>परिचय</b> यहाँ लिखें',theory:'दाएँ से जोड़ें',formulas:'$a+b=b+a$',example:'478+259=737',steps:'',shortcut:'',mistakes:'',mins:5,order:1,published:'true'},
+ questions:{chapter:'जोड़',type:'mcq',text:'478 + 259 = ?',o1:'727',o2:'737',o3:'747',o4:'637',answer:2,tol:0,marks:1,neg:0,explanation:'478+259=737',order:1,published:'true'}};
+let U=null,ADM=false,P={xp:0,streak:1,done:{}},C={subjects:[],chapters:[],lessons:[],questions:[],users:[]},v={tab:'learn',sub:null,ch:null,les:null,quiz:null,ed:null,ad:'subjects',att:null,busy:false,db:null,dn:20,dopen:false};
+const byOrder=a=>a.sort((x,y)=>(x.order||0)-(y.order||0));
+const rows=s=>s.docs.map(d=>({id:d.id,...d.data()}));
+
+// ===== 3. FIREBASE OPERATIONS (content + progress) =====
+async function load(){ // learners only receive published docs (enforced by rules too)
+ const names=ADM?['subjects','chapters','lessons','questions']:['subjects','chapters','lessons'];
+ const r=await Promise.all(names.map(n=>getDocs(ADM?collection(db,n):query(collection(db,n),where('published','==',true)))));
+ names.forEach((n,i)=>C[n]=byOrder(rows(r[i])));
+}
+const save=async p=>{try{await setDoc(doc(db,'users',U.uid),{...p,updated:serverTimestamp()},{merge:true})}catch(e){toast('सहेजा नहीं जा सका — नेटवर्क जाँचें')}};
+function daily(){const t=new Date().toLocaleDateString('en-CA'),y=new Date(Date.now()-864e5).toLocaleDateString('en-CA');
+ if(P.lastDay!=t){P.streak=P.lastDay==y?(P.streak||0)+1:1;P.lastDay=t;save({streak:P.streak,lastDay:t})}}
+
+// ===== 4. QUIZ ENGINE (reusable: reads questions only from Firebase) =====
+const optsOf=q=>[q.o1,q.o2,q.o3,q.o4].filter(Boolean);
+const correctIdx=q=>q.type=='multi'?String(q.answer).split(',').map(n=>n-1):[Number(q.answer)-1];
+function judge(q,a){
+ if(q.type=='num'){const n=parseFloat(a);return !isNaN(n)&&Math.abs(n-parseFloat(q.answer))<=(+q.tol||0)}
+ if(q.type=='multi')return JSON.stringify([...a].sort())==JSON.stringify(correctIdx(q).sort());
+ return a===correctIdx(q)[0]}
+async function startQuiz(chId,only){
+ try{let qs=only;if(!qs){const s=await getDocs(query(collection(db,'questions'),where('chapterId','==',chId),where('published','==',true)));qs=byOrder(rows(s))}
+  if(!qs.length)return toast('इस अध्याय में अभी प्रश्न नहीं हैं');
+  v.quiz={chId,qs,i:0,sel:qs[0].type=='multi'?[]:null,checked:false,res:[],t0:Date.now(),end:false};render()}catch(e){toast('प्रश्न लोड नहीं हुए')}}
+async function finishQuiz(q){
+ if(q.saved)return;q.saved=true;q.end=true; // guard against duplicate submission
+ const correct=q.res.filter(r=>r.ok).length,secs=Math.round((Date.now()-q.t0)/1000);
+ P.xp+=correct*CFGAPP.xpPerCorrect;
+ try{await addDoc(collection(db,'users',U.uid,'attempts'),{chapterId:q.chId,score:q.res.reduce((a,r)=>a+r.m,0),total:q.qs.reduce((a,x)=>a+(+x.marks||1),0),correct,n:q.qs.length,wrong:q.res.filter(r=>!r.ok).map(r=>r.id),secs,at:serverTimestamp()});
+  await save({xp:P.xp});v.att=null}catch(e){toast('परिणाम सहेजा नहीं जा सका')}
+ render()}
+
+// ===== 5. VIEWS =====
+const nav=()=>`<nav class="nav"><div>${[['learn','🏠','सीखें'],['practice','🎯','अभ्यास'],['doubts','💬','संदेह'],['progress','📊','प्रगति'],...(ADM?[['admin','⚙️','एडमिन']]:[])].map(t=>`<button class="${v.tab==t[0]?'on':''}" onclick="A.tab('${t[0]}')"><span>${t[1]}</span>${t[2]}</button>`).join('')}</div></nav>`;
+const loginView=()=>`<div style="padding:60px 0"><h1 style="color:var(--g);font-size:30px;text-align:center">🧮 Ank-Maths</h1><p style="text-align:center;color:var(--mute)">खाता एडमिन द्वारा बनाया जाता है। अपने ईमेल व पासवर्ड से लॉगिन करें।</p><div id="inst"></div><label>ईमेल</label><input id="le" type="email" autocomplete="username"><label>पासवर्ड</label><input id="lp" type="password" autocomplete="current-password"><button class="btn" id="lb" onclick="A.login()">लॉगिन</button>
+<div class="card" style="margin-top:22px"><b class="f">खाता नहीं है?</b><p style="color:var(--mute);margin:4px 0">खाता एडमिन बनाते हैं। अपना विवरण भरें; अनुरोध WhatsApp पर एडमिन को जाएगा।</p><label>नाम</label><input id="rn"><label>ईमेल</label><input id="re" type="email"><label>मोबाइल (वैकल्पिक)</label><input id="rm" inputmode="tel"><button class="btn b" onclick="A.reqAcc()">WhatsApp पर अनुरोध भेजें</button></div></div>`;
+
+function learn(){
+ if(v.les){const l=C.lessons.find(x=>x.id==v.les),sec=(t,x)=>x?`<div class="card"><b class="f">${t}</b><div>${rich(x)}</div></div>`:'';
+  return `<button class="back" onclick="A.les(null)">←</button><h2>${esc(l.title)}</h2>`+sec('परिचय',l.intro)+sec('सिद्धांत',l.theory)+sec('📐 सूत्र',l.formulas)+sec('✏️ हल उदाहरण',l.example)+sec('चरणबद्ध हल',l.steps)+sec('⚡ शॉर्टकट',l.shortcut)+sec('⚠️ आम गलतियाँ',l.mistakes)+(P.done[l.id]?'<div class="fb ok">✅ पाठ पूर्ण</div>':`<button class="btn" onclick="A.finish('${l.id}')">पाठ पूर्ण करें +${CFGAPP.xpLesson} XP</button>`)}
+ if(v.ch){const c=C.chapters.find(x=>x.id==v.ch),ls=C.lessons.filter(x=>x.chapterId==c.id);
+  return `<button class="back" onclick="A.ch(null)">←</button><h2>${c.emoji||''} ${esc(c.title)}</h2><div class="path">`+ls.map((l,i)=>{const d=P.done[l.id],open=i==0||P.done[ls[i-1].id];
+   return `<button class="node" style="${d?'background:var(--o);border-color:var(--od)':'background:var(--b);border-color:var(--bd)'}" ${open?'':'disabled'} onclick="A.les('${l.id}')" aria-label="${esc(l.title)}">${d?'⭐':open?'📖':'🔒'}</button><div class="lbl">${esc(l.title)}<small>${l.mins||5} मिनट</small></div>`}).join('')+'</div>'+(ls.length?'':empty('इस अध्याय में अभी पाठ नहीं हैं'))}
+ let h='';const last=C.lessons.find(l=>l.id==P.last&&!P.done[l.id]);
+ if(last)h+=`<button class="btn b" style="margin-top:14px" onclick="A.les('${last.id}')">▶ जारी रखें: ${esc(last.title)}</button>`;
+ C.subjects.forEach(s=>{h+=`<div class="hero"><h2>${s.emoji||''} ${esc(s.title)}</h2></div>`;
+  C.chapters.filter(c=>c.subjectId==s.id).forEach(c=>{const ls=C.lessons.filter(l=>l.chapterId==c.id),n=ls.filter(l=>P.done[l.id]).length,p=ls.length?Math.round(n/ls.length*100):0;
+   h+=`<div class="card" style="cursor:pointer" onclick="A.ch('${c.id}')"><b class="f" style="font-size:18px">${c.emoji||''} ${esc(c.title)}</b><div style="color:var(--mute);font-size:13px">${n}/${ls.length} पाठ · ${p}%</div><div class="bar" style="margin-top:6px"><i style="width:${p}%"></i></div></div>`})});
+ return h||empty('अभी कोई सामग्री प्रकाशित नहीं है।')}
+
+function practice(){
+ const q=v.quiz;
+ if(!q)return '<h2 style="margin:16px 0 4px">अध्याय क्विज़</h2><p style="color:var(--mute);margin:0 0 8px">कैलकुलेटर के बिना हल करें।</p>'+(C.chapters.map(c=>`<div class="card row"><b class="f" style="flex:1">${c.emoji||''} ${esc(c.title)}</b><button class="btn s b" onclick="A.start('${c.id}')">शुरू करें</button></div>`).join('')||empty('अभी कोई अध्याय नहीं है'));
+ if(q.end){const co=q.res.filter(r=>r.ok).length,sc=q.res.reduce((a,r)=>a+r.m,0),wrong=q.qs.filter(x=>q.res.find(r=>r.id==x.id&&!r.ok));
+  return `<div style="text-align:center;padding:24px 0"><div style="font-size:64px">${co==q.qs.length?'🏆':'🎯'}</div><h2>स्कोर ${sc}</h2><p>सही ${co}/${q.qs.length} · शुद्धता ${Math.round(co/q.qs.length*100)}% · ${Math.round((Date.now()-q.t0)/1000)} सेकंड</p></div>`+wrong.map(x=>`<div class="card"><div>${rich(x.text)}</div><div class="fb ok" style="margin-top:8px">उत्तर: ${x.type=='num'?esc(x.answer):correctIdx(x).map(i=>esc(optsOf(x)[i])).join(', ')}<br>${rich(x.explanation)}</div></div>`).join('')+(wrong.length?`<button class="btn b" onclick="A.retry()">गलत प्रश्न फिर हल करें</button>`:'')+`<button class="btn w" style="margin-top:8px" onclick="v.quiz=null;render()">वापस</button>`}
+ const x=q.qs[q.i];let h=`<div class="row" style="margin:16px 0"><div class="bar"><i style="width:${q.i/q.qs.length*100}%"></i></div><span class="chip">${q.i+1}/${q.qs.length}</span></div><h2 style="font-size:21px;margin-bottom:10px">${rich(x.text)}</h2>`;
+ if(x.type=='num')h+=`<input id="ans" inputmode="decimal" placeholder="उत्तर लिखें" ${q.checked?'disabled':''} value="${esc(q.sel||'')}">`;
+ else{const ok=correctIdx(x);optsOf(x).forEach((o,i)=>{const on=x.type=='multi'?q.sel.includes(i):q.sel===i;let c=on?'sel':'';if(q.checked){if(ok.includes(i))c='ok';else if(on)c='no'}
+  h+=`<button class="opt ${c}" ${q.checked?'disabled':''} onclick="A.pick(${i})">${x.type=='multi'?(on?'☑ ':'☐ '):''}${esc(o)}</button>`})}
+ if(!q.checked)return h+`<button class="btn" style="margin-top:10px" onclick="A.check()">जाँचें</button>`;
+ const r=q.res[q.res.length-1];
+ return h+`<div class="fb ${r.ok?'ok':'no'}">${r.ok?'✅ सही!':'❌ गलत।'} ${x.type=='num'&&!r.ok?'उत्तर: '+esc(x.answer)+'<br>':''}${rich(x.explanation)}</div><button class="btn" onclick="A.next()">${q.i==q.qs.length-1?'परिणाम देखें':'आगे बढ़ें'}</button>`}
+
+function doubts(){
+ if(!v.db){A.loadDb();return empty('लोड हो रहा है…')}
+ let h=`<h2 style="margin:16px 0 4px">💬 संदेह पूछें</h2><p style="color:var(--mute);margin:0 0 8px">आपका प्रश्न और एडमिन का उत्तर सभी विद्यार्थी देख सकते हैं।</p>
+ <div class="card"><select id="dch"><option value="">सामान्य</option>${C.chapters.map(c=>`<option value="${c.id}">${esc(c.title)}</option>`).join('')}</select><textarea id="dtx" rows="3" maxlength="1000" placeholder="अपना संदेह लिखें…"></textarea><button class="btn" onclick="A.ask()">भेजें</button></div>`;
+ if(ADM)h+=`<label><input type="checkbox" style="width:auto" ${v.dopen?'checked':''} onchange="v.dopen=this.checked;render()"> केवल बिना उत्तर वाले</label>`;
+ const list=v.db.filter(d=>!(ADM&&v.dopen)||!d.answer);
+ h+=list.map(d=>{const c=C.chapters.find(x=>x.id==d.chapterId);
+  return `<div class="card"><div style="font-size:13px;color:var(--mute)">${esc(d.name)} · ${d.at?d.at.toDate().toLocaleDateString():'अभी'}${c?' · '+esc(c.title):''}</div><div style="margin:6px 0">${nl(d.text)}</div>`+
+  (d.answer?`<div class="fb ok"><b>✅ एडमिन का उत्तर</b><br>${rich(d.answer)}</div>`:'<span class="tag" style="background:var(--mute)">उत्तर की प्रतीक्षा</span>')+
+  (ADM?`<textarea id="ans_${d.id}" rows="3" placeholder="उत्तर लिखें (HTML / गणित $...$ चलेगा)">${esc(d.answer||'')}</textarea><div class="row"><button class="btn s" onclick="A.reply('${d.id}')">उत्तर सहेजें</button><button class="btn s" style="background:var(--r);border-color:var(--rd)" onclick="A.delDoubt('${d.id}')">हटाएँ</button></div>`:'')+`</div>`}).join('')||empty('अभी कोई संदेह नहीं');
+ if(v.db.length>=v.dn)h+=`<button class="btn w" onclick="v.dn+=20;v.db=null;render()">और दिखाएँ</button>`;
+ return h}
+function progressV(){
+ if(!v.att){A.loadAtt();return empty('लोड हो रहा है…')}
+ const n=C.lessons.length,d=C.lessons.filter(l=>P.done[l.id]).length,at=v.att,tot=at.reduce((a,x)=>a+x.n,0),cor=at.reduce((a,x)=>a+x.correct,0),m={};
+ at.forEach(x=>{m[x.chapterId]=m[x.chapterId]||{n:0,c:0};m[x.chapterId].n+=x.n;m[x.chapterId].c+=x.correct});
+ return `<div class="hero"><h2>कुल प्रगति</h2><p>${d}/${n} पाठ पूर्ण · ⚡${P.xp} XP · 🔥${P.streak} दिन</p><div class="bar" style="margin-top:10px;background:rgba(255,255,255,.35)"><i style="width:${n?d/n*100:0}%;background:#fff"></i></div></div>
+ <div class="card">प्रयास ${at.length} · प्रश्न ${tot} · सही ${cor} · शुद्धता ${tot?Math.round(cor/tot*100):0}%</div><h3 style="margin:14px 0 4px">अध्यायवार प्रदर्शन</h3>`+
+ (Object.entries(m).map(([id,o])=>{const c=C.chapters.find(x=>x.id==id),p=Math.round(o.c/o.n*100);return `<div class="card"><b>${esc(c?c.title:id)}</b> ${p}% ${p<60?'<span class="tag" style="background:var(--r)">दोहराएँ</span>':''}<div class="bar" style="margin-top:6px"><i style="width:${p}%"></i></div></div>`}).join('')||empty('अभी कोई क्विज़ नहीं दिया'))+
+ `<h3 style="margin:14px 0 4px">हाल के प्रयास</h3>`+at.slice(0,8).map(x=>{const c=C.chapters.find(y=>y.id==x.chapterId);return `<div class="card">${esc(c?c.title:'')} — ${x.correct}/${x.n} · ${x.at?x.at.toDate().toLocaleDateString():''}</div>`}).join('')+
+ `<button class="btn w" style="margin-top:14px" onclick="A.logout()">लॉग आउट</button>`}
+
+// ===== 6. ADMIN PANEL (form-driven: one schema per collection) =====
+const SC={
+ subjects:[['title','नाम'],['emoji','Emoji'],['order','क्रम','n'],['published','प्रकाशित','b']],
+ chapters:[['subjectId','विषय','sel:subjects'],['title','नाम'],['emoji','Emoji'],['order','क्रम','n'],['published','प्रकाशित','b']],
+ lessons:[['chapterId','अध्याय','sel:chapters'],['title','शीर्षक'],['intro','परिचय','a'],['theory','सिद्धांत','a'],['formulas','सूत्र (गणित $...$ में)','a'],['example','हल उदाहरण','a'],['steps','चरणबद्ध हल','a'],['shortcut','शॉर्टकट','a'],['mistakes','आम गलतियाँ','a'],['mins','मिनट','n'],['order','क्रम','n'],['published','प्रकाशित','b']],
+ questions:[['chapterId','अध्याय','sel:chapters'],['type','प्रकार','sel:mcq,num,multi'],['text','प्रश्न','a'],['o1','विकल्प 1'],['o2','विकल्प 2'],['o3','विकल्प 3'],['o4','विकल्प 4'],['answer','उत्तर (mcq: 1-4 | multi: 1,3 | num: संख्या)'],['tol','सहनशीलता (केवल num)','n'],['marks','अंक','n'],['neg','नेगेटिव अंक','n'],['explanation','व्याख्या/हल','a'],['order','क्रम','n'],['published','प्रकाशित','b']]};
+const LBL={subjects:'विषय',chapters:'अध्याय',lessons:'पाठ',questions:'प्रश्न',users:'यूज़र'};
+function importView(){const c=v.imp;return `<h2 style="margin:12px 0">${LBL[c]} इम्पोर्ट</h2><div class="card">Excel में बनाकर <b>CSV UTF-8</b> में सेव करें, या JSON चिपकाएँ। <b>id</b> वाली पंक्ति उसी आइटम को अपडेट करती है; बाकी नए बनते हैं। क्रम: पहले विषय → अध्याय → पाठ/प्रश्न। अध्याय का नाम <b>chapter</b> कॉलम में लिख सकते हैं।</div><button class="btn s w" onclick="A.tpl('${c}')">⬇ नमूना फ़ाइल</button><label style="display:block;margin-top:10px">फ़ाइल चुनें</label><input type="file" id="impf" accept=".csv,.json,.txt" onchange="A.readf(this)"><label>या यहाँ चिपकाएँ</label><textarea id="imptxt" rows="8"></textarea><label><input type="checkbox" id="imppub" style="width:auto"> सीधे प्रकाशित करें</label><button class="btn" style="margin-top:8px" onclick="A.doImp()">इम्पोर्ट करें</button><button class="btn w" style="margin-top:8px" onclick="v.imp=null;render()">रद्द करें</button>`}
+function admin(){
+ if(v.imp)return importView();
+ if(v.ed){const {col,id,d}=v.ed;return `<h2 style="margin:12px 0">${id?'संपादित करें':'नया जोड़ें'} — ${LBL[col]}</h2>${col=='lessons'||col=='questions'?'<p style="color:var(--mute);font-size:13px">सादा टेक्स्ट या HTML (&lt;b&gt;, &lt;table&gt;, &lt;img&gt; आदि) लिख सकते हैं; गणित $...$ में।</p>':''}`+SC[col].map(([k,l,t])=>{const val=d[k]??'';let f;
+  if(t=='b')f=`<input type="checkbox" id="f_${k}" ${val?'checked':''} style="width:auto">`;
+  else if(t=='a')f=`<textarea id="f_${k}" rows="4">${esc(val)}</textarea>`;
+  else if(t&&t.startsWith('sel:')){const o=t.slice(4),os=C[o]?C[o].map(x=>[x.id,x.title]):o.split(',').map(x=>[x,x]);f=`<select id="f_${k}">${os.map(([a,b])=>`<option value="${a}" ${a==val?'selected':''}>${esc(b)}</option>`).join('')}</select>`}
+  else f=`<input id="f_${k}" ${t=='n'?'type="number" step="any"':''} value="${esc(val)}">`;
+  return `<label>${l}</label>${f}`}).join('')+`<button class="btn" onclick="A.saveDoc()">सहेजें</button><button class="btn w" style="margin-top:8px" onclick="v.ed=null;render()">रद्द करें</button>`}
+ const k=v.ad;let h=`<div class="tabs">${Object.keys(LBL).map(x=>`<button class="${k==x?'on':''}" onclick="A.ad('${x}')">${LBL[x]}</button>`).join('')}</div>`;
+ if(k=='users')return h+`<div class="card"><b class="f">नया यूज़र बनाएँ</b><label>नाम</label><input id="un"><label>ईमेल</label><input id="ue" type="email"><label>पासवर्ड (6+ अक्षर)</label><input id="up"><button class="btn" onclick="A.addUser()">खाता बनाएँ</button></div>`+C.users.map(u=>`<div class="card">${esc(u.name||'')} · ${esc(u.email||'')}<div style="color:var(--mute);font-size:13px">⚡${u.xp||0} XP · 🔥${u.streak||0} · ${Object.keys(u.done||{}).length} पाठ पूर्ण</div></div>`).join('');
+ h+=`<div class="row" style="margin-bottom:8px"><button class="btn s" onclick="A.edit('${k}')">＋ नया</button><button class="btn s w" onclick="A.imp('${k}')">⬆ इम्पोर्ट</button><button class="btn s w" onclick="A.exp('${k}','csv')">⬇ CSV</button><button class="btn s w" onclick="A.exp('${k}','json')">⬇ JSON</button>${C.subjects.length?'':'<button class="btn s b" onclick="A.seed()">सैंपल डेटा लोड करें</button>'}</div>`;
+ return h+(C[k].slice(0,60).map(d=>`<div class="card"><b>${esc(d.title||d.text)}</b> ${d.published?'<span class="tag">प्रकाशित</span>':'<span class="tag" style="background:var(--mute)">ड्राफ्ट</span>'}<div class="row" style="margin-top:8px"><button class="btn s b" onclick="A.edit('${k}','${d.id}')">संपादित</button><button class="btn s w" onclick="A.dup('${k}','${d.id}')">कॉपी</button><button class="btn s w" onclick="A.pub('${k}','${d.id}')">${d.published?'अप्रकाशित करें':'प्रकाशित करें'}</button><button class="btn s" style="background:var(--r);border-color:var(--rd)" onclick="A.del('${k}','${d.id}')">हटाएँ</button></div></div>`).join('')||empty('कुछ नहीं मिला — "＋ नया" दबाएँ'))}
+
+// ===== 7. ACTIONS =====
+// ===== PWA: "ऐप डाउनलोड करें" button on the login page (hidden once installed) =====
+const standalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+function showInstall(){const b=$('#inst');if(!b)return;
+ if(standalone())b.innerHTML='';
+ else if(window.__bip)b.innerHTML='<button class="btn b" style="margin-bottom:12px" onclick="A.install()">📲 ऐप डाउनलोड करें</button>';
+ else if(isIOS)b.innerHTML='<div class="card" style="font-size:14px">📲 iPhone/iPad: Safari में <b>Share ⬆️ → Add to Home Screen</b> दबाकर ऐप जोड़ें।</div>';
+ else b.innerHTML=''}
+addEventListener('bipready',showInstall);
+addEventListener('appinstalled',()=>{window.__bip=null;toast('ऐप इंस्टॉल हो गया ✓');showInstall()});
+let READY=false;
+function render(){const a=$('#app');if(!READY){a.innerHTML='<div style="text-align:center;padding:90px 0;color:var(--mute)"><div style="font-size:48px">🧮</div>लोड हो रहा है…</div>';return}if(!U){a.innerHTML=loginView();showInstall();return}
+ a.innerHTML=`<div class="top"><h1>Ank-Maths</h1><span class="chip">🔥${P.streak}</span><span class="chip" style="color:var(--o)">⚡${P.xp}</span></div>`+({learn,practice,doubts,progress:progressV,admin}[v.tab])()+nav();
+ if(window.renderMathInElement)renderMathInElement(a,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}
+const A={
+ tab(t){v.tab=t;v.ed=null;v.imp=null;if(t=='doubts')v.db=null;render();scrollTo(0,0)},
+ ch(id){v.ch=id;v.les=null;render();scrollTo(0,0)},
+ les(id){v.les=id;if(id){P.last=id;save({last:id})}render();scrollTo(0,0)},
+ finish(id){if(P.done[id])return;P.done[id]=true;P.xp+=CFGAPP.xpLesson;save({done:{[id]:true},xp:P.xp});toast('🎉 शाबाश! +'+CFGAPP.xpLesson+' XP');v.les=null;render()},
+ start:id=>startQuiz(id),
+ pick(i){const q=v.quiz;if(q.checked)return;if(q.qs[q.i].type=='multi')q.sel=q.sel.includes(i)?q.sel.filter(x=>x!=i):[...q.sel,i];else q.sel=i;render()},
+ check(){const q=v.quiz,x=q.qs[q.i];if(x.type=='num')q.sel=$('#ans').value.trim();
+  if(q.sel===null||q.sel===''||(Array.isArray(q.sel)&&!q.sel.length))return toast('पहले उत्तर चुनें');
+  const ok=judge(x,q.sel);q.checked=true;q.res.push({id:x.id,ok,m:ok?(+x.marks||1):-(+x.neg||0)});render()},
+ next(){const q=v.quiz;if(q.i>=q.qs.length-1)return finishQuiz(q);q.i++;q.sel=q.qs[q.i].type=='multi'?[]:null;q.checked=false;render()},
+ retry(){const q=v.quiz;startQuiz(q.chId,q.qs.filter(x=>q.res.find(r=>r.id==x.id&&!r.ok)))},
+ async loadAtt(){try{v.att=rows(await getDocs(query(collection(db,'users',U.uid,'attempts'),orderBy('at','desc'),limit(30))))}catch(e){v.att=[];toast('इतिहास लोड नहीं हुआ')}render()},
+ async login(){const b=$('#lb');if(b){b.disabled=true;b.textContent='प्रतीक्षा करें…'}try{await signInWithEmailAndPassword(auth,$('#le').value.trim(),$('#lp').value)}catch(e){toast('लॉगिन असफल: '+(e.code||e.message));if(b){b.disabled=false;b.textContent='लॉगिन'}}},
+ logout(){signOut(auth)},
+ async ad(k){v.ad=k;v.imp=null;if(k=='users'){try{C.users=rows(await getDocs(collection(db,'users')))}catch(e){toast('यूज़र लोड नहीं हुए')}}render()},
+ edit(col,id){const d=id?{...C[col].find(x=>x.id==id)}:{published:false,order:C[col].length+1,type:'mcq',marks:1,neg:0,tol:0};v.ed={col,id,d};render()},
+ async saveDoc(){const {col,id}=v.ed,d={};
+  SC[col].forEach(([k,l,t])=>{const e=$('#f_'+k);d[k]=t=='b'?e.checked:t=='n'?(e.value===''?0:+e.value):e.value.trim()});
+  if(!(d.title||d.text))return toast('शीर्षक/प्रश्न भरें');
+  if(col!='subjects'&&SC[col][0][2]&&!d[SC[col][0][0]])return toast('पहले ऊपर का विषय/अध्याय बनाएँ');
+  if(col=='questions'){if(d.type=='num'){if(isNaN(parseFloat(d.answer)))return toast('संख्यात्मक उत्तर दें')}else{if(!/^[1-4](,[1-4])*$/.test(d.answer)||(d.type=='mcq'&&d.answer.length>1))return toast('उत्तर 1-4 में दें (multi: 1,3)');if(!d.o1||!d.o2)return toast('कम से कम 2 विकल्प दें')}}
+  try{await setDoc(id?doc(db,col,id):doc(collection(db,col)),{...d,updated:serverTimestamp()},{merge:true});await load();v.ed=null;toast('सहेजा गया ✓');render()}catch(e){toast('त्रुटि: '+(e.code||e.message))}},
+ async del(col,id){if(!confirm('क्या आप सचमुच हटाना चाहते हैं? (इसके अंतर्गत की सामग्री नहीं हटेगी)'))return;try{await deleteDoc(doc(db,col,id));await load();render()}catch(e){toast('त्रुटि: '+e.code)}},
+ async pub(col,id){const d=C[col].find(x=>x.id==id);await setDoc(doc(db,col,id),{published:!d.published,updated:serverTimestamp()},{merge:true});await load();render()},
+ async dup(col,id){const {id:_,...d}=C[col].find(x=>x.id==id);await addDoc(collection(db,col),{...d,title:d.title?d.title+' (कॉपी)':undefined,published:false,updated:serverTimestamp()});await load();render()},
+ async addUser(){const e=$('#ue').value.trim(),p=$('#up').value;if(!e||p.length<6)return toast('ईमेल व 6+ अक्षर का पासवर्ड दें');
+  const sec=initializeApp(CFG,'sec'+Date.now()); // second app instance keeps the admin signed in
+  try{const r=await createUserWithEmailAndPassword(getAuth(sec),e,p);await setDoc(doc(db,'users',r.user.uid),{name:$('#un').value.trim(),email:e,xp:0,streak:1,done:{},created:serverTimestamp()});toast('खाता बन गया ✓');A.ad('users')}catch(x){toast('त्रुटि: '+(x.code||x.message))}finally{deleteApp(sec)}},
+ imp(c){v.imp=c;render();scrollTo(0,0)},
+ async readf(i){const f=i.files[0];if(f)$('#imptxt').value=await f.text()},
+ exp(col,fmt){const ks=['id',...SC[col].map(x=>x[0])],items=C[col].map(d=>Object.fromEntries(ks.map(k=>[k,d[k]??''])));
+  if(fmt=='json')dl(col+'.json',JSON.stringify(items,null,1),'application/json');
+  else dl(col+'.csv','\uFEFF'+[ks,...items.map(d=>ks.map(k=>d[k]))].map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n'),'text/csv')},
+ tpl(col){const s=SAMPLE[col],h=Object.keys(s);dl(col+'-template.csv','\uFEFF'+h.join(',')+'\r\n'+h.map(k=>'"'+String(s[k]).replace(/"/g,'""')+'"').join(','),'text/csv')},
+ async doImp(){if(v.busy)return;const col=v.imp;v.pubAll=$('#imppub').checked;let items;
+  try{items=parseIn($('#imptxt').value)}catch(e){return toast('फ़ॉर्मेट गलत है: '+e.message)}
+  if(!items.length)return toast('कुछ नहीं मिला');
+  const find=(arr,k)=>{const a=arr.find(x=>x.id==k||x.title==k);return a&&a.id},errs=[],docs=[];
+  items.forEach((it,n)=>{const d={...it},id=d.id;delete d.id;const e=m=>errs.push((n+2)+': '+m);
+   if(col=='chapters'){d.subjectId=d.subjectId||find(C.subjects,d.subject);delete d.subject}
+   if(col=='lessons'||col=='questions'){d.chapterId=d.chapterId||find(C.chapters,d.chapter);delete d.chapter}
+   SC[col].forEach(([k,l,ty])=>{if(ty=='n'&&d[k]!==undefined&&d[k]!=='')d[k]=+d[k];if(ty=='b'&&d[k]!==undefined)d[k]=d[k]===true||['true','1','हाँ','yes'].includes(String(d[k]).toLowerCase())});
+   if(v.pubAll)d.published=true;if(d.published===undefined)d.published=false;
+   if(!id&&d.order===undefined)d.order=C[col].length+n+1;
+   if(!(d.title||d.text))return e('title/text खाली है');
+   if(col!='subjects'&&!d[SC[col][0][0]])return e('अध्याय/विषय नहीं मिला (नाम सही लिखें)');
+   if(id&&String(id).includes('/'))return e('id में / नहीं चल सकता');
+   if(col=='questions'){d.type=d.type||'mcq';d.answer=String(d.answer??'').replace(/\s/g,'');const m=checkQ(d);if(m)return e(m)}
+   docs.push([id,d])});
+  if(errs.length)return alert('इन पंक्तियों को ठीक करें (कुछ भी सहेजा नहीं गया):\n'+errs.slice(0,15).join('\n'));
+  v.busy=true;
+  try{for(let i=0;i<docs.length;i+=400){const b=writeBatch(db);docs.slice(i,i+400).forEach(([id,d])=>b.set(id?doc(db,col,String(id)):doc(collection(db,col)),{...d,updated:serverTimestamp()},{merge:true}));await b.commit()}
+   await load();v.imp=null;toast(docs.length+' आइटम सहेजे ✓')}catch(e){toast('त्रुटि: '+(e.code||e.message))}
+  v.busy=false;render()},
+ async ask(){const x=$('#dtx').value.trim();if(x.length<5)return toast('संदेह थोड़ा विस्तार से लिखें');
+  if(Date.now()-(v.lastAsk||0)<30000)return toast('कृपया 30 सेकंड बाद दोबारा पूछें');
+  try{await addDoc(collection(db,'doubts'),{uid:U.uid,name:P.name||U.email.split('@')[0],text:x.slice(0,1000),chapterId:$('#dch').value,at:serverTimestamp()});v.lastAsk=Date.now();v.db=null;toast('संदेह भेज दिया ✓');render()}catch(e){toast('भेजा नहीं जा सका: '+(e.code||e.message))}},
+ async loadDb(){try{v.db=rows(await getDocs(query(collection(db,'doubts'),orderBy('at','desc'),limit(v.dn))))}catch(e){v.db=[];toast('संदेह लोड नहीं हुए')}render()},
+ async reply(id){const a=$('#ans_'+id).value.trim();if(!a)return toast('उत्तर लिखें');
+  try{await setDoc(doc(db,'doubts',id),{answer:a,answeredAt:serverTimestamp(),answeredBy:U.uid},{merge:true});v.db=null;toast('उत्तर सहेजा ✓');render()}catch(e){toast('त्रुटि: '+(e.code||e.message))}},
+ async delDoubt(id){if(!confirm('यह संदेह हटाएँ?'))return;try{await deleteDoc(doc(db,'doubts',id));v.db=null;render()}catch(e){toast('त्रुटि: '+(e.code||e.message))}},
+ reqAcc(){const n=$('#rn').value.trim(),e=$('#re').value.trim(),m=$('#rm').value.trim(),w=String(CFGAPP.adminWhatsApp).replace(/\D/g,'');
+  if(!n||!/\S+@\S+\.\S+/.test(e))return toast('नाम और सही ईमेल भरें');
+  if(w.length<10)return alert('index.html में CFGAPP.adminWhatsApp में एडमिन का WhatsApp नंबर भरें (देश कोड सहित, जैसे 919876543210)');
+  open('https://wa.me/'+w+'?text='+encodeURIComponent('नमस्कार, मुझे "गणित अभ्यास" ऐप का खाता चाहिए।\nनाम: '+n+'\nईमेल: '+e+(m?'\nमोबाइल: '+m:'')),'_blank')},
+ async install(){const e=window.__bip;if(!e)return;e.prompt();try{await e.userChoice}catch(x){}window.__bip=null;showInstall()},
+ async seed(){ // sample content: Arithmetic, 7 chapters, 1 lesson + 1 question each
+  const S=[['add','जोड़ (Addition)','➕','दाएँ से बाएँ अंक जोड़ें; योग 9 से अधिक हो तो हासिल (carry) आगे ले जाएँ।','$a+b=b+a$','$478+259$: इकाई 8+9=17 (7 लिखें, 1 हासिल) … = 737','478 + 259 = ?',['727','737','747','637'],'2'],
+   ['sub','घटाना (Subtraction)','➖','दाएँ से घटाएँ; छोटा अंक हो तो अगले अंक से उधार (borrow) लें।','$a-b=c \\Rightarrow c+b=a$','$1000-357=643$ (जाँच: 643+357=1000)','1000 − 357 = ?',['653','643','743','633'],'2'],
+   ['mul','गुणा (Multiplication)','✖️','गुणा बार-बार जोड़ है। पहाड़े याद रखें।','$a\\times b=b\\times a$','$23\\times17=23\\times10+23\\times7=391$','23 × 17 = ?',['381','391','401','371'],'2'],
+   ['div','भाग (Division)','➗','भाज्य = भाजक × भागफल + शेषफल','$\\text{भाज्य}=\\text{भाजक}\\times\\text{भागफल}+\\text{शेष}$','$756\\div12=63$','756 ÷ 12 = ?',['62','63','64','73'],'2'],
+   ['frac','भिन्न (Fraction)','🍕','जोड़ने से पहले हर (denominator) बराबर करें।','$\\frac{a}{b}+\\frac{c}{d}=\\frac{ad+bc}{bd}$','$\\frac12+\\frac13=\\frac{3+2}{6}=\\frac56$','$\\frac12+\\frac13=?$',['$\\frac25$','$\\frac56$','$\\frac16$','$\\frac26$'],'2'],
+   ['dec','दशमलव (Decimal)','🔢','दशमलव बिंदु को सीध में रखकर जोड़ें/घटाएँ।','$0.5=\\frac{5}{10}$','$12.5+7.25=19.75$','12.5 + 7.25 = ? (संख्या लिखें)',null,'19.75'],
+   ['pct','प्रतिशत (Percentage)','💯','प्रतिशत यानी प्रति सैकड़ा।','$x\\%\\text{ of }N=\\frac{x}{100}\\times N$','$20\\%$ of $250=\\frac{20}{100}\\times250=50$','250 का 20% = ?',['40','50','60','25'],'2']];
+  try{const b=writeBatch(db),t=serverTimestamp();b.set(doc(db,'subjects','arith'),{title:'अंकगणित (Arithmetic)',emoji:'🧮',order:1,published:true,updated:t});
+   S.forEach((s,i)=>{const cid='ch-'+s[0];b.set(doc(db,'chapters',cid),{subjectId:'arith',title:s[1],emoji:s[2],order:i+1,published:true,updated:t});
+    b.set(doc(db,'lessons','ls-'+s[0]),{chapterId:cid,title:s[1],intro:'परीक्षा में बार-बार पूछा जाने वाला विषय।',theory:s[3],formulas:s[4],example:s[5],steps:'ऊपर के उदाहरण को चरण-दर-चरण हल करके देखें।',shortcut:'',mistakes:'हासिल/उधार भूलना।',mins:5,order:1,published:true,updated:t});
+    b.set(doc(db,'questions','q-'+s[0]),{chapterId:cid,type:s[7]?'mcq':'num',text:s[5+1],o1:(s[7]||[])[0]||'',o2:(s[7]||[])[1]||'',o3:(s[7]||[])[2]||'',o4:(s[7]||[])[3]||'',answer:s[8],tol:0,marks:1,neg:0,explanation:s[5],order:1,published:true,updated:t})});
+   await b.commit();await load();toast('सैंपल डेटा जुड़ गया ✓');render()}catch(e){toast('त्रुटि: '+(e.code||e.message))}}};
+window.A=A;window.v=v;window.render=render;
+
+onAuthStateChanged(auth,async u=>{U=u;P={xp:0,streak:1,done:{}};v.quiz=null;v.att=null;READY=!u;render(); // no user: show login at once
+ if(u){try{const [tk,s]=await Promise.all([u.getIdTokenResult(),getDoc(doc(db,'users',u.uid))]); // run in parallel
+   ADM=!!tk.claims.admin;
+   if(s.exists())P={...P,...s.data()};else setDoc(doc(db,'users',u.uid),{name:u.email,email:u.email,xp:0,streak:1,done:{}});
+   await load();daily()}catch(e){toast('लोड नहीं हो सका: '+(e.code||e.message))}
+  READY=true;render()}});
+render();
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script></body></html>
