@@ -129,7 +129,7 @@ async function finishQuiz(q){
  render()}
 
 // ===== 5. VIEWS =====
-const nav=()=>`<nav class="nav"><div>${[['learn','🏠','सीखें'],['practice','🎯','अभ्यास'],['doubts','💬','संदेह'],['progress','📊','प्रगति'],...(ADM?[['admin','⚙️','एडमिन']]:[])].map(t=>`<button class="${v.tab==t[0]?'on':''}" onclick="A.tab('${t[0]}')"><span>${t[1]}</span>${t[2]}</button>`).join('')}</div></nav>`;
+const nav=()=>`<nav class="nav"><div>${[['learn','🏠','सीखें'],['practice','🎯','अभ्यास'],['doubts','💬','प्रश्न'],['progress','📊','प्रगति'],...(ADM?[['admin','⚙️','एडमिन']]:[])].map(t=>`<button class="${v.tab==t[0]?'on':''}" onclick="A.tab('${t[0]}')"><span>${t[1]}</span>${t[2]}</button>`).join('')}</div></nav>`;
 const loginView=()=>`<div style="padding:60px 0"><h1 style="color:var(--g);font-size:30px;text-align:center">🧮 Ank-Maths</h1><p style="text-align:center;color:var(--mute)">खाता एडमिन द्वारा बनाया जाता है। अपने ईमेल व पासवर्ड से लॉगिन करें।</p><div id="inst"></div><label>ईमेल</label><input id="le" type="email" autocomplete="username"><label>पासवर्ड</label><input id="lp" type="password" autocomplete="current-password"><button class="btn" id="lb" onclick="A.login()">लॉगिन</button>
 <div class="card" style="margin-top:22px"><b class="f">खाता नहीं है?</b><p style="color:var(--mute);margin:4px 0">खाता एडमिन बनाते हैं। अपना विवरण भरें; अनुरोध WhatsApp पर एडमिन को जाएगा।</p><label>नाम</label><input id="rn"><label>ईमेल</label><input id="re" type="email"><label>मोबाइल (वैकल्पिक)</label><input id="rm" inputmode="tel"><button class="btn b" onclick="A.reqAcc()">WhatsApp पर अनुरोध भेजें</button></div></div>`;
 
@@ -161,14 +161,14 @@ function practice(){
 
 function doubts(){
  if(!v.db){A.loadDb();return empty('लोड हो रहा है…')}
- let h=`<h2 style="margin:16px 0 4px">💬 संदेह पूछें</h2><p style="color:var(--mute);margin:0 0 8px">आपका प्रश्न और एडमिन का उत्तर सभी विद्यार्थी देख सकते हैं।</p>
- <div class="card"><select id="dch"><option value="">सामान्य</option>${C.chapters.map(c=>`<option value="${c.id}">${esc(c.title)}</option>`).join('')}</select><textarea id="dtx" rows="3" maxlength="1000" placeholder="अपना संदेह लिखें…"></textarea><button class="btn" onclick="A.ask()">भेजें</button></div>`;
+ let h=`<h2 style="margin:16px 0 4px">💬 प्रश्न पूछें</h2><p style="color:var(--mute);margin:0 0 8px">आपका प्रश्न और एडमिन का उत्तर सभी विद्यार्थी देख सकते हैं।</p>
+ <div class="card"><select id="dch"><option value="">सामान्य</option>${C.chapters.map(c=>`<option value="${c.id}">${esc(c.title)}</option>`).join('')}</select><textarea id="dtx" rows="3" maxlength="1000" placeholder="अपना प्रश्न लिखें…"></textarea><button class="btn" onclick="A.ask()">भेजें</button></div>`;
  if(ADM)h+=`<label><input type="checkbox" style="width:auto" ${v.dopen?'checked':''} onchange="v.dopen=this.checked;render()"> केवल बिना उत्तर वाले</label>`;
  const list=v.db.filter(d=>!(ADM&&v.dopen)||!d.answer);
  h+=list.map(d=>{const c=C.chapters.find(x=>x.id==d.chapterId);
   return `<div class="card"><div style="font-size:13px;color:var(--mute)">${esc(d.name)} · ${d.at?d.at.toDate().toLocaleDateString():'अभी'}${c?' · '+esc(c.title):''}</div><div style="margin:6px 0">${nl(d.text)}</div>`+
   (d.answer?`<div class="fb ok"><b>✅ एडमिन का उत्तर</b><br>${rich(d.answer)}</div>`:'<span class="tag" style="background:var(--mute)">उत्तर की प्रतीक्षा</span>')+
-  (ADM?`<textarea id="ans_${d.id}" rows="3" placeholder="उत्तर लिखें (HTML / गणित $...$ चलेगा)">${esc(d.answer||'')}</textarea><div class="row"><button class="btn s" onclick="A.reply('${d.id}')">उत्तर सहेजें</button><button class="btn s" style="background:var(--r);border-color:var(--rd)" onclick="A.delDoubt('${d.id}')">हटाएँ</button></div>`:'')+`</div>`}).join('')||empty('अभी कोई संदेह नहीं');
+  (ADM?`<textarea id="ans_${d.id}" rows="3" placeholder="उत्तर लिखें (HTML / गणित $...$ चलेगा)">${esc(d.answer||'')}</textarea><div class="row"><button class="btn s" onclick="A.reply('${d.id}')">उत्तर सहेजें</button><button class="btn s" style="background:var(--r);border-color:var(--rd)" onclick="A.delDoubt('${d.id}')">हटाएँ</button></div>`:'')+`</div>`}).join('')||empty('अभी कोई प्रश्न नहीं');
  if(v.db.length>=v.dn)h+=`<button class="btn w" onclick="v.dn+=20;v.db=null;render()">और दिखाएँ</button>`;
  return h}
 function progressV(){
@@ -272,17 +272,17 @@ const A={
   try{for(let i=0;i<docs.length;i+=400){const b=writeBatch(db);docs.slice(i,i+400).forEach(([id,d])=>b.set(id?doc(db,col,String(id)):doc(collection(db,col)),{...d,updated:serverTimestamp()},{merge:true}));await b.commit()}
    await load();v.imp=null;toast(docs.length+' आइटम सहेजे ✓')}catch(e){toast('त्रुटि: '+(e.code||e.message))}
   v.busy=false;render()},
- async ask(){const x=$('#dtx').value.trim();if(x.length<5)return toast('संदेह थोड़ा विस्तार से लिखें');
+ async ask(){const x=$('#dtx').value.trim();if(x.length<5)return toast('प्रश्न थोड़ा विस्तार से लिखें');
   if(Date.now()-(v.lastAsk||0)<30000)return toast('कृपया 30 सेकंड बाद दोबारा पूछें');
-  try{await addDoc(collection(db,'doubts'),{uid:U.uid,name:P.name||U.email.split('@')[0],text:x.slice(0,1000),chapterId:$('#dch').value,at:serverTimestamp()});v.lastAsk=Date.now();v.db=null;toast('संदेह भेज दिया ✓');render()}catch(e){toast('भेजा नहीं जा सका: '+(e.code||e.message))}},
- async loadDb(){try{v.db=rows(await getDocs(query(collection(db,'doubts'),orderBy('at','desc'),limit(v.dn))))}catch(e){v.db=[];toast('संदेह लोड नहीं हुए')}render()},
+  try{await addDoc(collection(db,'doubts'),{uid:U.uid,name:P.name||U.email.split('@')[0],text:x.slice(0,1000),chapterId:$('#dch').value,at:serverTimestamp()});v.lastAsk=Date.now();v.db=null;toast('प्रश्न भेज दिया ✓');render()}catch(e){toast('भेजा नहीं जा सका: '+(e.code||e.message))}},
+ async loadDb(){try{v.db=rows(await getDocs(query(collection(db,'doubts'),orderBy('at','desc'),limit(v.dn))))}catch(e){v.db=[];toast('प्रश्न लोड नहीं हुए')}render()},
  async reply(id){const a=$('#ans_'+id).value.trim();if(!a)return toast('उत्तर लिखें');
   try{await setDoc(doc(db,'doubts',id),{answer:a,answeredAt:serverTimestamp(),answeredBy:U.uid},{merge:true});v.db=null;toast('उत्तर सहेजा ✓');render()}catch(e){toast('त्रुटि: '+(e.code||e.message))}},
- async delDoubt(id){if(!confirm('यह संदेह हटाएँ?'))return;try{await deleteDoc(doc(db,'doubts',id));v.db=null;render()}catch(e){toast('त्रुटि: '+(e.code||e.message))}},
+ async delDoubt(id){if(!confirm('यह प्रश्न हटाएँ?'))return;try{await deleteDoc(doc(db,'doubts',id));v.db=null;render()}catch(e){toast('त्रुटि: '+(e.code||e.message))}},
  reqAcc(){const n=$('#rn').value.trim(),e=$('#re').value.trim(),m=$('#rm').value.trim(),w=String(CFGAPP.adminWhatsApp).replace(/\D/g,'');
   if(!n||!/\S+@\S+\.\S+/.test(e))return toast('नाम और सही ईमेल भरें');
   if(w.length<10)return alert('index.html में CFGAPP.adminWhatsApp में एडमिन का WhatsApp नंबर भरें (देश कोड सहित, जैसे 919876543210)');
-  open('https://wa.me/'+w+'?text='+encodeURIComponent('नमस्कार, मुझे "गणित अभ्यास" ऐप का खाता चाहिए।\nनाम: '+n+'\nईमेल: '+e+(m?'\nमोबाइल: '+m:'')),'_blank')},
+  open('https://wa.me/'+w+'?text='+encodeURIComponent('नमस्कार, मुझे "Ank-Maths" ऐप का Account चाहिए।\nनाम: '+n+'\nईमेल: '+e+(m?'\nमोबाइल: '+m:'')),'_blank')},
  async install(){const e=window.__bip;if(!e)return;e.prompt();try{await e.userChoice}catch(x){}window.__bip=null;showInstall()},
  async seed(){ // sample content: Arithmetic, 7 chapters, 1 lesson + 1 question each
   const S=[['add','जोड़ (Addition)','➕','दाएँ से बाएँ अंक जोड़ें; योग 9 से अधिक हो तो हासिल (carry) आगे ले जाएँ।','$a+b=b+a$','$478+259$: इकाई 8+9=17 (7 लिखें, 1 हासिल) … = 737','478 + 259 = ?',['727','737','747','637'],'2'],
