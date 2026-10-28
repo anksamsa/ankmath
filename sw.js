@@ -1,6 +1,6 @@
 // Ank-Maths service worker: makes the app installable and lets the app shell open offline.
 // Bump VERSION on every release so users receive the new files.
-const VERSION = 'ank-maths-v1';
+const VERSION = 'ank-maths-v2';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 // Only static library hosts are cached. Firebase data/auth calls are never touched (always live).
 const STATIC_HOSTS = ['www.gstatic.com', 'cdnjs.cloudflare.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
