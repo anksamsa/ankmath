@@ -342,7 +342,7 @@ const A={
  reqAcc(){const n=$('#rn').value.trim(),e=$('#re').value.trim(),m=$('#rm').value.trim(),w=String(CFGAPP.adminWhatsApp).replace(/\D/g,'');
   if(!n||!/\S+@\S+\.\S+/.test(e))return toast('नाम और सही ईमेल भरें');
   if(w.length<10)return alert('index.html में CFGAPP.adminWhatsApp में एडमिन का WhatsApp नंबर भरें (देश कोड सहित, जैसे 919876543210)');
-  open('https://wa.me/'+w+'?text='+encodeURIComponent('नमस्कार, मुझे "गणित अभ्यास" ऐप का खाता चाहिए।\nनाम: '+n+'\nईमेल: '+e+(m?'\nमोबाइल: '+m:'')),'_blank')},
+  open('https://wa.me/'+w+'?text='+encodeURIComponent('नमस्कार, मुझे "Ank-Maths" ऐप का खाता चाहिए।\nनाम: '+n+'\nईमेल: '+e+(m?'\nमोबाइल: '+m:'')),'_blank')},
  async install(){const e=window.__bip;if(!e)return;e.prompt();try{await e.userChoice}catch(x){}window.__bip=null;showInstall()},
  eye(){const p=$('#lp');p.type=p.type=='password'?'text':'password'},
  async seed(){ // sample content: Arithmetic, 7 chapters, 1 lesson + 1 question each
